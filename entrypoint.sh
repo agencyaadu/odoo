@@ -20,7 +20,7 @@ add_arg_if_set "--db_sslmode" "${DB_SSLMODE:-}"
 
 # Check if database is initialized by probing a core table.
 db_is_initialized() {
-    python - <<'PY'
+    python3 - <<'PY'
 import os
 import sys
 import psycopg2
@@ -75,8 +75,11 @@ if [ -n "${DB_HOST:-}" ] && [ -n "${DB_NAME:-}" ]; then
         echo "Database ${DB_NAME} already initialized; skipping -i base."
     else
         echo "Database ${DB_NAME} not initialized; running -i base once."
-        odoo -c /etc/odoo/odoo.conf -d "${DB_NAME}" -i base --without-demo all
+        odoo -c /etc/odoo/odoo.conf -d "${DB_NAME}" -i base --without-demo
     fi
+elif [ -z "${DB_HOST:-}" ]; then
+    echo "ERROR: DB_HOST not set. Set DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME/DB_SSLMODE env vars."
+    exit 1
 fi
 
 exec odoo -c /etc/odoo/odoo.conf "${DB_ARGS[@]}" "$@"
