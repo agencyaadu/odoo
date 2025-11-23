@@ -5,6 +5,7 @@ FROM odoo:19
 # control the external Postgres connection.
 COPY --chown=odoo:odoo addons /mnt/extra-addons
 COPY --chown=odoo:odoo debian/odoo.conf /etc/odoo/odoo.conf
+COPY --chown=odoo:odoo entrypoint.sh /entrypoint.sh
 
 USER odoo
-CMD ["odoo", "-c", "/etc/odoo/odoo.conf"]
+ENTRYPOINT ["/entrypoint.sh"]
