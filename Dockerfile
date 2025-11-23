@@ -6,6 +6,8 @@ FROM odoo:19
 COPY --chown=odoo:odoo addons /mnt/extra-addons
 COPY --chown=odoo:odoo debian/odoo.conf /etc/odoo/odoo.conf
 COPY --chown=odoo:odoo entrypoint.sh /entrypoint.sh
+# Normalize line endings and ensure it is executable.
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 USER odoo
 ENTRYPOINT ["/entrypoint.sh"]
