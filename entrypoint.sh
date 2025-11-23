@@ -69,17 +69,19 @@ else
     echo "DB_HOST not set; skipping wait-for-psql. Odoo will use config/CLI defaults."
 fi
 
-# Initialize the database schema once if needed.
-if [ -n "${DB_HOST:-}" ] && [ -n "${DB_NAME:-}" ]; then
+# Initialize the database schema once if needed, using the provided DB args.
+if [ -z "${DB_HOST:-}" ]; then
+    echo "ERROR: DB_HOST not set. Set DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME/DB_SSLMODE env vars."
+    exit 1
+fi
+
+if [ -n "${DB_NAME:-}" ]; then
     if db_is_initialized; then
         echo "Database ${DB_NAME} already initialized; skipping -i base."
     else
         echo "Database ${DB_NAME} not initialized; running -i base once."
-        odoo -c /etc/odoo/odoo.conf -d "${DB_NAME}" -i base --without-demo
+        odoo -c /etc/odoo/odoo.conf "${DB_ARGS[@]}" -d "${DB_NAME}" -i base --without-demo
     fi
-elif [ -z "${DB_HOST:-}" ]; then
-    echo "ERROR: DB_HOST not set. Set DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME/DB_SSLMODE env vars."
-    exit 1
 fi
 
 exec odoo -c /etc/odoo/odoo.conf "${DB_ARGS[@]}" "$@"
