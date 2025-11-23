@@ -38,7 +38,12 @@ if not params["host"] or not params["dbname"]:
 try:
     with psycopg2.connect(**params) as conn:
         with conn.cursor() as cr:
-            cr.execute(sql.SQL("SELECT 1 FROM ir_module_module LIMIT 1"))
+            cr.execute(sql.SQL("SELECT state FROM ir_module_module WHERE name = 'base'"))
+            row = cr.fetchone()
+            if not row:
+                sys.exit(1)
+            if row[0] not in ('installed', 'to upgrade'):
+                sys.exit(1)
     sys.exit(0)
 except psycopg2.errors.UndefinedTable:
     sys.exit(1)
