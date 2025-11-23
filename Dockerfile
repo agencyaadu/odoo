@@ -1,5 +1,8 @@
 FROM odoo:19
 
+# Ensure we run build steps as root (base image defaults to odoo).
+USER root
+
 # Copy custom addons and config. DB settings in debian/odoo.conf are left empty
 # so container env vars (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_SSLMODE)
 # control the external Postgres connection.
