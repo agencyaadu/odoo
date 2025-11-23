@@ -15,7 +15,7 @@ add_arg_if_set "--db_host" "${DB_HOST:-}"
 add_arg_if_set "--db_port" "${DB_PORT:-}"
 add_arg_if_set "--db_user" "${DB_USER:-}"
 add_arg_if_set "--db_password" "${DB_PASSWORD:-}"
-add_arg_if_set "--db_name" "${DB_NAME:-}"
+add_arg_if_set "--database" "${DB_NAME:-}"
 add_arg_if_set "--db_sslmode" "${DB_SSLMODE:-}"
 
 # Only wait for Postgres if a host is provided and the helper exists.
