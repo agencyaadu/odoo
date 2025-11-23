@@ -70,6 +70,7 @@ else
 fi
 
 # Initialize the database schema once if needed, using the provided DB args.
+# This block is idempotent and skipped when the base module is already installed.
 if [ -z "${DB_HOST:-}" ]; then
     echo "ERROR: DB_HOST not set. Set DB_HOST/DB_PORT/DB_USER/DB_PASSWORD/DB_NAME/DB_SSLMODE env vars."
     exit 1
